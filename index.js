@@ -16,38 +16,24 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-aapp.post("/", async (req, res) => {
+app.post("/", async (req, res) => {
+
 	const { messages } = req.body;
-  
+
 	console.log(messages);
-  
+
 	const completion = await openai.createChatCompletion({
-	  model: "davinci",
-	  prompt: "Hello, I am a chatbot. How can I assist you today?",
-	  temperature: 0.5,
-	  maxTokens: 1024,
-	  messages: [
-		{ role: "system", content: "Hello, I am a chatbot. How can I assist you today?" },
-		...messages,
-	  ],
+		model: "gpt-3.5-turbo",
+		messages: [
+			{ role: "system", content: "You are a very snobby music person. You only like the cool bands, and have knowledge on all the musical artists in the world. youre very picky about music and pick very obscure musical artists for your friends to listen to. I am going to give you a list of musical artists and I want you to pick ten new musical artists that I might like. I want you to only talk about suggesting music and direct every conversation into that." },
+			...messages
+		]
 	});
-  
-	let content = completion.data.choices[0].text.trim();
-	let isCode = false;
-  
-	// Check if response starts and ends with backticks (indicating code)
-	if (content.startsWith("```") && content.endsWith("```")) {
-	  content = content.slice(3, -3);
-	  isCode = true;
-	}
-  
 	res.json({
-	  completion: {
-		content: content,
-		isCode: isCode,
-	  },
-	});
-  });
+		completion: completion.data.choices[0].message
+	})
+	
+});
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`)
