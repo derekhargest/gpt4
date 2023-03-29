@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GPT 4 Chat API</title>
+	<!-- link stylesheet  -->
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<main>
+		<div class="chat__container">
+			<div class="form__container">
+				<form action="">
+					<textarea name="" name="message" id="message"" cols="30" rows="10" autocomplete="off"></textarea>
+					<!-- <input type="text" name="message" id="message" autocomplete="off"> -->
+					<button type="submit"><span>Send</span>
+						<div id="spinner" class="spinner">
+							<div class="spinner__icon"></div>
+						</div>
+					</button>
+				</form>
+			</div>
+			<div id="chat-log">
+			</div>
+		</div>
+	</main>
+	<script>
+		let messages = []
+		const chatLog = document.getElementById('chat-log');
+		const message = document.getElementById('message');
+		const form = document.querySelector('form');
+		const spinner = document.getElementById('spinner');
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			spinner.style.display = 'flex';
+			const messageText = message.value;
+			const newMessage = {
+				"role": "user",
+				"content": `${messageText}`
+			}
+			messages.push(newMessage);
+			message.value='';
+			const messageElement = document.createElement('div');
+			messageElement.classList.add('message');
+			messageElement.classList.add('message--sent');
+			messageElement.innerHTML = `
+						<div class="message__user-name">User</div>
+						<div class="message__text">
+							<div class="text">
+								${messageText}
+							</div>
+						</div>
+			`;
+			chatLog.prepend(messageElement);
+			fetch('http://localhost:3000', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					messages
+				})
+			})
+			.then(res => res.json())
+			.then(data => {
+				let newAssistantMessage = {
+					"role": "assistant",
+					"content": `${data.completion.content}`
+				}
+				messages.push(newAssistantMessage);
+				const messageElement = document.createElement('div');
+				messageElement.classList.add('message');
+				messageElement.classList.add('message--received');
+				messageElement.innerHTML = `
+						<div class="message__user-name">GPT4</div>
+						<div class="message__text">
+							${data.completion.content}
+						</div>
+				`;
+				chatLog.prepend(messageElement);
+				chatLog.scrollTop = chatLog.scrollHeight;
+				spinner.style.display = 'none';
+							chatLog.scrollTop = 0;
+			})
+		})
+	</script>
+</body>
+</html>
