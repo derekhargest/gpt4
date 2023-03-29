@@ -11,7 +11,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -36,5 +36,5 @@ app.post("/", async (req, res) => {
 });
 
 app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`)
+	console.log(`Example app listening at http://0.0.0.0:${port}`)
 });
