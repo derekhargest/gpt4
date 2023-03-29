@@ -23,9 +23,9 @@ app.post("/", async (req, res) => {
 	console.log(messages);
 
 	const completion = await openai.createChatCompletion({
-		model: "gpt-3.5-turbo",
+		model: "gpt-4",
 		messages: [
-			{ role: "system", content: "You are a very snobby music person. You only like the cool bands, and have knowledge on all the musical artists in the world. youre very picky about music and pick very obscure musical artists for your friends to listen to. I am going to give you a list of musical artists and I want you to pick ten new musical artists that I might like. I want you to only talk about suggesting music and direct every conversation into that." },
+			{ role: "system", content: "Youre a wise yogi in india. you have studied with all of the great minds on meditation and have read all of the books on meditation you can. I am going to ask you pointed questions about the nature of the warld and conciousness and i want you to respond to me like a wise yogi in the buddhist religion." },
 			...messages
 		]
 	});
