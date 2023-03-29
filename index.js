@@ -9,8 +9,8 @@ const __filename = fileURLToPath(import.meta.url); // Get the current file's pat
 const __dirname = path.dirname(__filename); // Get the current directory's path
 
 const configuration = new Configuration({
-  organization: "org-Rqgad24MLeDu39gJKgZpH0XJ",
-  apiKey: "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",
+  organization: process.env.ORG_KEY,
+  apiKey: process.env.API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
