@@ -38,3 +38,15 @@ app.post("/", async (req, res) => {
 app.listen(port, () => {
 	console.log(`Example app listening at http://0.0.0.0:${port}`)
 });
+
+app.get('/', (req, res, next) => {
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            name: 'name of your app',
+            version: '0.1.0'
+        }
+    });
+
+});
