@@ -5,6 +5,9 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from 'url'; // Import fileURLToPath from url module
 
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
+
 const __filename = fileURLToPath(import.meta.url); // Get the current file's path
 const __dirname = path.dirname(__filename); // Get the current directory's path
 
